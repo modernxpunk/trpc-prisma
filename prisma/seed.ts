@@ -12,6 +12,7 @@ async function main() {
 					name: faker.lorem.words(),
 				};
 			}),
+		skipDuplicates: true,
 	});
 }
 
