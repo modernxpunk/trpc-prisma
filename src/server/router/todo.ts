@@ -30,7 +30,7 @@ const todoRouter = router({
 		.input(
 			z.object({
 				id: z.number(),
-				name: z.string(),
+				name: z.string().min(10).max(100),
 			})
 		)
 		.mutation(async (req) => {
