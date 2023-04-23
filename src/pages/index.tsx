@@ -6,6 +6,7 @@ import { trpc } from "src/utils/trpc";
 import { GetStaticPropsContext } from "next";
 import appRouter from "src/server/router/_app";
 import { createServerSideHelpers } from "@trpc/react-query/server";
+import TodoItem from "src/components/TodoItem";
 
 export async function getStaticProps(context: GetStaticPropsContext) {
 	const ssg = createServerSideHelpers({
@@ -24,27 +25,29 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
 const Home: NextPageWithLayout = () => {
 	const todos = trpc.todo.getAll.useQuery();
-	const todo1 = trpc.todo.getById.useQuery(1);
-	const todo2 = trpc.todo.getById.useQuery(2);
+	// const todo1 = trpc.todo.getById.useQuery(1);
 	const createTodo = trpc.todo.create.useMutation();
-	const deleteTodoById = trpc.todo.deleteById.useMutation();
 
+	// useState<Pick<Todo, "name">>("")
 	const [todoName, setTodoName] = useState<string>("");
 
 	return (
 		<div className="container">
-			<input
-				className="border"
-				value={todoName}
-				onChange={(e) => setTodoName(e.target.value)}
-			/>
-			<button onClick={() => createTodo.mutate(todoName)}>add</button>
+			<form onSubmit={() => createTodo.mutate(todoName)}>
+				<input
+					className="border"
+					value={todoName}
+					onChange={(e) => setTodoName(e.target.value)}
+				/>
+				<button type="submit">add</button>
+			</form>
+			{createTodo.error && (
+				<p>
+					<code>{JSON.stringify(createTodo.error.data?.code)}</code>
+				</p>
+			)}
 			{todos.data &&
-				todos.data.map((todo: Todo) => (
-					<p key={todo.id} onClick={() => deleteTodoById.mutate(todo.id)}>
-						{todo.name}
-					</p>
-				))}
+				todos.data.map((todo: Todo) => <TodoItem todo={todo} key={todo.id} />)}
 		</div>
 	);
 };

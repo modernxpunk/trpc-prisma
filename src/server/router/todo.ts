@@ -26,6 +26,26 @@ const todoRouter = router({
 			});
 			return todo;
 		}),
+	edit: publicProcedure
+		.input(
+			z.object({
+				id: z.number(),
+				name: z.string(),
+			})
+		)
+		.mutation(async (req) => {
+			const id = req.input.id;
+			const name = req.input.name;
+			const todo: Todo = await prisma.todo.update({
+				where: {
+					id: id,
+				},
+				data: {
+					name,
+				},
+			});
+			return todo;
+		}),
 	deleteById: publicProcedure.input(z.number()).mutation(async (req) => {
 		const id = req.input;
 		const todo: Todo = await prisma.todo.delete({
