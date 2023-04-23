@@ -16,21 +16,17 @@ const todoRouter = router({
 		});
 		return todo;
 	}),
-	create: publicProcedure.input(z.string()).mutation(async (req) => {
-		const name = req.input;
-		if (name.length < 10) {
-			throw new TRPCError({
-				code: "BAD_REQUEST",
-				message: "Todo name must be at least 10 characters",
+	create: publicProcedure
+		.input(z.string().min(10).max(100))
+		.mutation(async (req) => {
+			const name = req.input;
+			const todo: Todo = await prisma.todo.create({
+				data: {
+					name: name,
+				},
 			});
-		}
-		const todo: Todo = await prisma.todo.create({
-			data: {
-				name: name,
-			},
-		});
-		return todo;
-	}),
+			return todo;
+		}),
 	deleteById: publicProcedure.input(z.number()).mutation(async (req) => {
 		const id = req.input;
 		const todo: Todo = await prisma.todo.delete({
