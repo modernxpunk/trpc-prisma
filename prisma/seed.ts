@@ -3,15 +3,25 @@ import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
 
+const createRandomTodo = () => {
+	return {
+		name: faker.lorem.words(),
+	};
+};
+
+type Config = {
+	todos: number;
+};
+
+const generate = ({ todos }: Config) => {
+	return Array(todos).fill(0).map(createRandomTodo);
+};
+
 async function main() {
 	await prisma.todo.createMany({
-		data: Array(100)
-			.fill(0)
-			.map(() => {
-				return {
-					name: faker.lorem.words(),
-				};
-			}),
+		data: generate({
+			todos: 100,
+		}),
 		skipDuplicates: true,
 	});
 }

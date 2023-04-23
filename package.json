@@ -11,8 +11,9 @@
 		"format": "prettier --ignore-path .gitignore \"src/**/*.{js,ts,jsx,tsx}\" --write --cache",
 		"prepare": "husky install",
 		"db:up": "npx prisma db seed",
-		"db:down": "npx prisma migrate reset",
-		"db:gui": "npx prisma studio"
+		"db:down": "npx prisma migrate reset --skip-seed --force",
+		"db:gui": "npx prisma studio",
+		"setup": "pnpm run db:up"
 	},
 	"lint-staged": {
 		"./src/**/*.{ts,js,jsx,tsx}": [
