@@ -11,7 +11,7 @@ const TodoItem = ({ todo }: Props) => {
 	const [newTodoName, setNewTodoName] = useState<string>(todo.name || "");
 
 	const deleteTodoById = trpc.todo.deleteById.useMutation();
-	const editTodo = trpc.todo.edit.useMutation();
+	const editTodoById = trpc.todo.editById.useMutation();
 
 	return (
 		<form className="space-x-2">
@@ -22,7 +22,7 @@ const TodoItem = ({ todo }: Props) => {
 			/>
 			<button
 				type="submit"
-				onClick={() => editTodo.mutate({ id: todo.id, name: newTodoName })}
+				onClick={() => editTodoById.mutate({ id: todo.id, name: newTodoName })}
 			>
 				Edit
 			</button>

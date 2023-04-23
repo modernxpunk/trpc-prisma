@@ -26,7 +26,7 @@ const todoRouter = router({
 			});
 			return todo;
 		}),
-	edit: publicProcedure
+	editById: publicProcedure
 		.input(
 			z.object({
 				id: z.number(),
