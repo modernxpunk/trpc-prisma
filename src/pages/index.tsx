@@ -3,6 +3,24 @@ import Layout from "src/components/common/Layout";
 import { NextPageWithLayout } from "src/types/common";
 import { Todo } from "@prisma/client";
 import { trpc } from "src/utils/trpc";
+import { GetStaticPropsContext } from "next";
+import appRouter from "src/server/router/_app";
+import { createServerSideHelpers } from "@trpc/react-query/server";
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+	const ssg = createServerSideHelpers({
+		router: appRouter,
+		ctx: {},
+	});
+
+	await ssg.todo.getAll.prefetch();
+
+	return {
+		props: {
+			trpcState: ssg.dehydrate(),
+		},
+	};
+}
 
 const Home: NextPageWithLayout = () => {
 	const todos = trpc.todo.getAll.useQuery();
