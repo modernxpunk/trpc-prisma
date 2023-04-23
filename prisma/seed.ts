@@ -1,12 +1,17 @@
 import { PrismaClient } from "@prisma/client";
+import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
 
 async function main() {
-	await prisma.todo.create({
-		data: {
-			name: "How to fix?",
-		},
+	await prisma.todo.createMany({
+		data: Array(100)
+			.fill(0)
+			.map(() => {
+				return {
+					name: faker.lorem.words(),
+				};
+			}),
 	});
 }
 
