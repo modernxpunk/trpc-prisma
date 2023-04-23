@@ -24,7 +24,8 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
 const Home: NextPageWithLayout = () => {
 	const todos = trpc.todo.getAll.useQuery();
-	const todo = trpc.todo.getById.useQuery(1);
+	const todo1 = trpc.todo.getById.useQuery(1);
+	const todo2 = trpc.todo.getById.useQuery(2);
 	const createTodo = trpc.todo.create.useMutation();
 	const deleteTodoById = trpc.todo.deleteById.useMutation();
 
