@@ -34,8 +34,7 @@ const todoRouter = router({
 			})
 		)
 		.mutation(async (req) => {
-			const id = req.input.id;
-			const name = req.input.name;
+			const { id, name } = req.input;
 			const todo: Todo = await prisma.todo.update({
 				where: {
 					id: id,

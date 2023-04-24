@@ -7,6 +7,7 @@ import { GetStaticPropsContext } from "next";
 import appRouter from "src/server/router/_app";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import TodoItem from "src/components/TodoItem";
+import { Button } from "@ui/Button";
 
 export async function getStaticProps(context: GetStaticPropsContext) {
 	const ssg = createServerSideHelpers({
@@ -33,21 +34,30 @@ const Home: NextPageWithLayout = () => {
 
 	return (
 		<div className="container">
-			<form onSubmit={() => createTodo.mutate(todoName)}>
+			<form
+				className="flex items-stretch justify-center flex-1 max-w-sm mx-auto mt-4"
+				onSubmit={() => createTodo.mutate(todoName)}
+			>
 				<input
-					className="border"
+					className="flex-1 border rounded rounded-r-none outline-0"
 					value={todoName}
 					onChange={(e) => setTodoName(e.target.value)}
 				/>
-				<button type="submit">add</button>
+				<Button className="rounded-l-none" type="submit">
+					add
+				</Button>
 			</form>
 			{createTodo.error && (
-				<p>
+				<p className="text-center">
 					<code>{JSON.stringify(createTodo.error.data?.code)}</code>
 				</p>
 			)}
-			{todos.data &&
-				todos.data.map((todo: Todo) => <TodoItem todo={todo} key={todo.id} />)}
+			<div className="flex flex-col items-center justify-center flex-1 max-w-sm gap-2 mx-auto mt-8">
+				{todos.data &&
+					todos.data.map((todo: Todo) => (
+						<TodoItem todo={todo} key={todo.id} />
+					))}
+			</div>
 		</div>
 	);
 };

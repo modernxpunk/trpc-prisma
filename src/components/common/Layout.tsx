@@ -10,7 +10,7 @@ const Layout = ({ children }: Props) => {
 	return (
 		<div
 			className={cx(
-				"flex flex-col min-h-screen overflow-hidden",
+				"flex flex-col min-h-screen overflow-hidden bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500",
 				fontsVariables.map((fontVariable: string) => fontVariable),
 				"font-sans"
 			)}
